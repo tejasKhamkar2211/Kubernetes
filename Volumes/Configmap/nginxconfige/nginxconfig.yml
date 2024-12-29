@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginwala
+spec:
+  containers:
+     - name: ngn
+       image: nginx
+       volumeMounts:
+           - name: nginxconfigvolume
+             mountPath: /etc/nginx/conf.d/default.conf
+             subPath: default.conf
+  volumes:
+    - name: nginxconfigvolume
+      configMap:
+         name: nginxconfig
+
+
+
+
+
+
+
+
+
