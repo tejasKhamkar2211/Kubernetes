@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: nfsvolume
+spec:
+  replicas: 3
+  strategy:
+     type: RollingUpdate
+     rollingUpdate:
+         maxSurge: 2
+         maxUnavailable: 0
+  selector:
+   matchLabels:
+      env: dev
+  template:
+       metadata:
+          labels:
+              env: dev
+       spec:
+            containers:
+                 - name: nginxcontaine
+                   image: nginx
+                   ports:
+                     - containerPort: 80
+                   volumeMounts:
+                    - mountPath: "/usr/share/nginx/html"
+                      name: myvolume
+
+            volumes:
+               -  name: myvolume
+                  nfs:
+                     server: fs-03517add8c1e52998.efs.us-east-1.amazonaws.com
+                     path: /home/ec2-user/test
+
