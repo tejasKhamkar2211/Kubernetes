@@ -1,0 +1,3 @@
+instruction:-
+
+Use kubeadm join command with token (copy the command from master and paste on worker)
