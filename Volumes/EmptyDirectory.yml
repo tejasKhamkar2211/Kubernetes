@@ -1,38 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: emptydorectoryvolume
+  name: emptydirvolume
+
+
 spec:
-   replicas: 3
-   strategy:
-     type: RollingUpdate
-     rollingUpdate:
-       maxSurge: 2
-       maxUnavailable: 0
+   replicas: 1
    selector:
-     matchLabels:
-       env: dev
+      matchLabels:
+         vol: emptdr
+
    template:
-        metadata:
-          labels:
-            env: dev
-        spec:
-           containers:
-             - name: learnvolume
-               image: nginx
-               ports:
-                 - containerPort: 80
-               volumeMounts:
+
+     metadata:
+      labels:
+         vol: emptdr
+      
+     spec: 
+        containers:
+           - name: firstnginxcon
+             image: nginx
+             ports: 
+               - containerPort: 80
+             volumeMounts: 
                 - mountPath: "/usr/share/nginx/html"
                   name: myvolume
-           containers:
-             - name: phpcontvolume
-               image: php
-               ports:
-                 - containerPort: 1000
-               volumeMounts:
-                - mountPath: "/usr/share/nginx/html"
+
+
+           - name: database
+             image: mysql
+             ports: 
+               - containerPort: 3306
+             env:
+              - name: MYSQL_ROOT_PASSWORD
+                value: mypassword
+             volumeMounts:
+                - mountPath: "/var"
                   name: myvolume
-           volumes:
-             - name: myvolume
-               emptyDir: {}
+        volumes:
+          - name: myvolume
+            emptyDir: {}
+# commands
+#kubectl exec -it <pod_name> -c <container_name> -- /bin/bash
+#
+# Here, the problem is that when we create two NGINX containers in a single pod, both containers cannot run on the same port number 80. That's why the second container is crashing.
