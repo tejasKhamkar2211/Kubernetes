@@ -1,3 +1,4 @@
+#kubectl exec -it <nginx-pod-name> -- sh -c "while true; do wget -q -O- http://localhost; done"
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
